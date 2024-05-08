@@ -1,0 +1,62 @@
+/sw/bioinfo/quast/5.0.2/snowy/bin/quast.py pilon_output.fasta
+
+Version: 5.0.2
+
+System information:
+  OS: Linux-3.10.0-1160.114.2.el7.x86_64-x86_64-with-centos-7.9.2009-Core (linux_64)
+  Python version: 3.7.2
+  CPUs number: 16
+
+Started: 2024-04-23 13:43:36
+
+Logging to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/quast.log
+NOTICE: Maximum number of threads is set to 4 (use --threads option to set it manually)
+
+CWD: /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation
+Main parameters: 
+  MODE: default, threads: 4, minimum contig length: 500, minimum alignment length: 65, \
+  ambiguity: one, threshold for extensive misassembly size: 1000
+
+Contigs:
+  Pre-processing...
+  pilon_output.fasta ==> pilon_output
+
+2024-04-23 13:43:43
+Running Basic statistics processor...
+  Contig files: 
+    pilon_output
+  Calculating N50 and L50...
+    pilon_output, N50 = 6996056, L50 = 1, Total length = 8772084, GC % = 72.00, # N's per 100 kbp =  0.00
+  Drawing Nx plot...
+    saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/basic_stats/Nx_plot.pdf
+  Drawing cumulative plot...
+    saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/basic_stats/cumulative_plot.pdf
+  Drawing GC content plot...
+    saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/basic_stats/GC_content_plot.pdf
+  Drawing pilon_output GC content plot...
+    saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/basic_stats/pilon_output_GC_content_plot.pdf
+Done.
+
+NOTICE: Genes are not predicted by default. Use --gene-finding or --glimmer option to enable it.
+
+2024-04-23 13:43:45
+Creating large visual summaries...
+This may take a while: press Ctrl-C to skip this step..
+  1 of 2: Creating Icarus viewers...
+  2 of 2: Creating PDF with all tables and plots...
+Done
+
+2024-04-23 13:43:46
+RESULTS:
+  Text versions of total report are saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/report.txt, report.tsv, and report.tex
+  Text versions of transposed total report are saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/transposed_report.txt, transposed_report.tsv, and transposed_report.tex
+  HTML version (interactive tables and plots) is saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/report.html
+  PDF version (tables and plots) is saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/report.pdf
+  Icarus (contig browser) is saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/icarus.html
+  Log is saved to /domus/h1/jasi9133/Genome-Analysis-Project/analysis/08_assembly_evaluation/quast_results/results_2024_04_23_13_43_36/quast.log
+
+Finished: 2024-04-23 13:43:46
+Elapsed time: 0:00:10.190335
+NOTICEs: 2; WARNINGs: 0; non-fatal ERRORs: 0
+
+Thank you for using QUAST!
