@@ -1,0 +1,25 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2024-2-7
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 5:00:00
+#SBATCH -J BWA
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user jakob.siljebo@gmail.com
+#SBATCH --output=%x.%j.out
+
+module load bioinfo-tools bwa/0.7.17 samtools/1.19
+
+# Index the Flye assembly
+bwa index assembly.fasta
+
+# Map short reads to the assembly
+bwa mem assembly.fasta trimmed_reads_forward_paired.fastq trimmed_reads_reversed_paired.fastq > mapped_reads.sam
+
+# Convert SAM to BAM format
+samtools view -bS mapped_reads.sam > mapped_reads.bam
+
+# Sort and index the BAM file
+samtools sort mapped_reads.bam -o sorted_mapped_reads.bam
+samtools index sorted_mapped_reads.bam
