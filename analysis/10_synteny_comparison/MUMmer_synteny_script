@@ -1,0 +1,15 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2024-2-7
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 01:00:00
+#SBATCH -J MUMmer_synteny
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user jakob.siljebo@gmail.com
+#SBATCH --output=%x.%j.out
+
+module load bioinfo-tools MUMmer
+
+nucmer -p MUMmer_HP_vs_R7 ../07_polishing/pilon_output.fasta /home/jasi9133/Genome-Analysis-Project/data/raw_data/reference_genome/R7_genome.fasta
+
