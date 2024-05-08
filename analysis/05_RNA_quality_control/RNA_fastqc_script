@@ -1,0 +1,28 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2024-2-7
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 05:00:00
+#SBATCH -J RNA_FastQC
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user jakob.siljebo@gmail.com
+#SBATCH --output=%x.%j.out
+
+module load bioinfo-tools FastQC
+
+# Define the directory paths
+input_dir="/home/jasi9133/Genome-Analysis-Project/data/raw_data/RNA_reads"
+output_dir="/home/jasi9133/Genome-Analysis-Project/analysis/05_RNA_quality_control"
+
+# Change directory to the output directory
+cd "$output_dir"
+
+# Loop through each sample and run FastQC
+for file in "$input_dir"/SRR24516459_*.fastq.gz "$input_dir"/SRR24516460_*.fastq.gz "$input_dir"/SRR24516461_*.fastq.gz; do
+    # Get the base filename without extension
+    base_name=$(basename "$file" .fastq.gz)
+    
+    # Run FastQC
+    fastqc "$file" -o "$output_dir"
+done
