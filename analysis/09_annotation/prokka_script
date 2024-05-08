@@ -1,0 +1,14 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2024-2-7
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 01:00:00
+#SBATCH -J PROKKA
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user jakob.siljebo@gmail.com
+#SBATCH --output=%x.%j.out
+
+module load bioinfo-tools prokka/1.45-5b58020
+
+prokka ../07_polishing/pilon_output.fasta --outdir prokka_output
