@@ -1,0 +1,29 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2024-2-7
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 5:00:00
+#SBATCH -J Flye
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user jakob.siljebo@gmail.com
+#SBATCH --output=%x.%j.out
+
+module load bioinfo-tools Flye
+
+echo "Copying nanopore long read file to $SNIC_TMP..."
+cp /home/jasi9133/Genome-Analysis-Project/data/raw_data/DNA_reads/SRR24413066.fastq.gz $SNIC_TMP/nanopore_long_read.fastq.gz
+
+cd $SNIC_TMP 
+
+echo "Unzipping nanopore long read file..."
+gunzip nanopore_long_read.fastq.gz
+
+echo "Running Flye assembly with nanopore long read data..."
+flye --nano-raw nanopore_long_read.fastq --threads 2 --out-dir flye_assembly
+
+echo "Compressing assembly FASTA file..."
+gzip flye_assembly/assembly.fasta
+
+echo "Copying Flye assembly results to project analysis folder..."
+cp flye_assembly/* /home/jasi9133/Genome-Analysis-Project/analysis/04_Flye
