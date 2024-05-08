@@ -1,0 +1,60 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2024-2-7
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 5:00:00
+#SBATCH -J RNA_BWA
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user jakob.siljebo@gmail.com
+#SBATCH --output=%x.%j.out
+
+module load bioinfo-tools bwa/0.7.17 samtools/1.19
+
+# Define input and output directories
+assembly_dir="/home/jasi9133/Genome-Analysis-Project/analysis/11_RNA_mapping/pilon_indexed"
+sample_dir="/home/jasi9133/Genome-Analysis-Project/data/raw_data/RNA_reads"
+
+output_dir_HP126="/home/jasi9133/Genome-Analysis-Project/analysis/11_RNA_mapping/output_HP126"
+output_dir_R7="/home/jasi9133/Genome-Analysis-Project/analysis/11_RNA_mapping/output_R7"
+
+echo "Starting mapping of RNA-seq reads to the polished assembly..."
+
+# Iterate over HP126 samples
+for sample in SRR24516459 SRR24516460 SRR24516461; do
+    echo "Mapping reads for sample $sample to the polished assembly..."
+    
+    # Map reads to polished assembly
+    echo "$assembly_dir/pilon_output.fasta"
+    echo "$sample_dir/${sample}_1.fastq.gz"
+    echo "$sample_dir/${sample}_2.fastq.gz"
+    echo "$output_dir_HP126/${sample}_mapped_reads.sam"
+    bwa mem "$assembly_dir/pilon_output.fasta" "$sample_dir/${sample}_1.fastq.gz" "$sample_dir/${sample}_2.fastq.gz" > "$output_dir_HP126/${sample}_mapped_reads.sam"
+    
+    # Convert SAM to sorted BAM
+    echo "Converting SAM to sorted BAM for sample $sample..."
+    samtools view -S -b "$output_dir_HP126/${sample}_mapped_reads.sam" > "$output_dir_HP126/${sample}_mapped_reads.bam"
+    samtools sort "$output_dir_HP126/${sample}_mapped_reads.bam" -o "$output_dir_HP126/${sample}_sorted_mapped_reads.bam"
+    samtools index "$output_dir_HP126/${sample}_sorted_mapped_reads.bam"
+    
+    echo "Finished processing sample $sample."
+done
+
+# Iterate over wildtype samples
+for sample in SRR24516462 SRR24516463 SRR24516464; do
+    echo "Mapping reads for sample $sample to the wildtype assembly..."
+    
+    # Map reads to wildtype assembly
+    bwa mem "$assembly_dir/pilon_output.fasta" "$sample_dir/${sample}_1.fastq.gz" "$sample_dir/${sample}_2.fastq.gz" > "$output_dir_R7/${sample}_mapped_reads.sam"
+    
+    # Convert SAM to sorted BAM
+    echo "Converting SAM to sorted BAM for sample $sample..."
+    samtools view -S -b "$output_dir_R7/${sample}_mapped_reads.sam" > "$output_dir_R7/${sample}_mapped_reads.bam"
+    samtools sort "$output_dir_R7/${sample}_mapped_reads.bam" -o "$output_dir_R7/${sample}_sorted_mapped_reads.bam"
+    samtools index "$output_dir_R7/${sample}_sorted_mapped_reads.bam"
+    
+    echo "Finished processing sample $sample."
+done
+
+echo "All samples have been processed."
+
