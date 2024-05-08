@@ -1,0 +1,51 @@
+#!/bin/bash -l
+#SBATCH -A uppmax2024-2-7
+#SBATCH -M snowy
+#SBATCH -p core
+#SBATCH -n 2
+#SBATCH -t 08:00:00
+#SBATCH -J HTseq
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user jakob.siljebo@gmail.com
+#SBATCH --output=%x.%j.out
+
+module load bioinfo-tools htseq/2.0.2
+
+# Set paths to input directories
+R7_dir="/home/jasi9133/Genome-Analysis-Project/analysis/11_RNA_mapping/output_HP126"
+HP126_dir="/home/jasi9133/Genome-Analysis-Project/analysis/11_RNA_mapping/output_R7"
+
+# Set path to genome annotation file
+annotation_file="PROKKA_04232024.gff"
+
+# Function to decompress and compress BAM files
+process_bam_files() {
+    local input_dir=$1
+    for gz_file in "$input_dir"/*_sorted_mapped_reads.bam.gz; do
+        echo "Processing file: $gz_file"
+        # Decompress BAM file
+        bam_file="${gz_file%.gz}"
+        gunzip -c "$gz_file" > "$bam_file"
+        
+        # Extract sample name from filename
+        sample=$(basename "$bam_file" | cut -d '_' -f1)
+        
+        # Run HTSeq-count
+        htseq-count -f bam -r pos -s no -t CDS -i ID "$bam_file" "$annotation_file" > "${sample}_counts.txt"
+        
+        # Compress BAM file again
+        gzip "$bam_file"
+    done
+}
+
+# Process R7 samples
+echo "Processing R7 samples..."
+process_bam_files "$R7_dir"
+
+# Process HP126 samples
+echo "Processing HP126 samples..."
+process_bam_files "$HP126_dir"
+
+echo "HTSeq feature counting completed!"
+
+
